@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>querySelector Übung – Visuell</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .card { border: 1px solid #ccc; padding: 10px; margin: 10px; }
+    .btn { padding: 5px 10px; background: lightblue; border: none; cursor: pointer; }
+    .active { background: lightgreen; }
+    .highlight { outline: 3px solid red; }
+    .controls { margin: 20px 0; }
+    button.selector-btn { margin: 5px; padding: 6px 12px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h1>querySelector – Visuelle Übung</h1>
+
+  <div class="controls">
+    <button class="selector-btn" data-selector=".card .btn">1. Button in Card</button>
+    <button class="selector-btn" data-selector=".item.active">2. Aktives Item</button>
+    <button class="selector-btn" data-selector="ul li:first-child">3a. Erstes Listenelement</button>
+    <button class="selector-btn" data-selector="ul li:last-child">3b. Letztes Listenelement</button>
+    <button class="selector-btn" data-selector='a[href^="https"]'>4a. Sicherer Link</button>
+    <button class="selector-btn" data-selector='input[type="email"]'>4b. Email Input</button>
+    <button class="selector-btn" data-selector="div > p">5. Direktes p-Kind</button>
+  </div>
+
+  <!-- 1. Verschachtelte Elemente -->
+  <div class="card">
+    <h2>Karte 1</h2>
+    <button class="btn">Button in Card</button>
+  </div>
+
+  <!-- 2. Mehrere Klassen gleichzeitig -->
+  <div class="item active">Aktives Item</div>
+  <div class="item">Normales Item</div>
+
+  <!-- 3. Pseudoklassen -->
+  <ul>
+    <li>Erster</li>
+    <li>Zweiter</li>
+    <li>Letzter</li>
+  </ul>
+
+  <!-- 4. Attribute -->
+  <a href="https://example.com">Sicherer Link</a>
+  <a href="http://example.com">Unsicherer Link</a>
+  <input type="email" placeholder="Deine E-Mail">
+
+  <!-- 5. Direkte Kind-Selektoren -->
+  <div>
+    <p>Direktes Kind</p>
+    <span>
+      <p>Verschachteltes Kind</p>
+    </span>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll(".selector-btn");
+    let lastHighlighted = null;
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        // Falls vorher ein Element markiert war, Markierung entfernen
+        if (lastHighlighted) {
+          lastHighlighted.classList.remove("highlight");
+        }
+
+        // Selektor aus Button-Attribut lesen
+        const selector = button.getAttribute("data-selector");
+        const element = document.querySelector(selector);
+
+        if (element) {
+          element.classList.add("highlight");
+          lastHighlighted = element;
+          console.log(`Gefunden: ${selector}`, element);
+        } else {
+          console.warn(`Kein Element gefunden für: ${selector}`);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
